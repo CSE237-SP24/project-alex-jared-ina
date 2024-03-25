@@ -21,24 +21,26 @@ public class Menu {
 	// Constructor
 	public Menu() {
 		this.in = new Scanner(System.in);
-
+	}
+	
+	public int getNumAccounts() {
+		int size = this.accountStorage.size();
+		return size;
 	}
 
-	public BankAccount createBankAccount(String name) {
-		BankAccount newAccount = new BankAccount();
-		newAccount.setAccountName(name);
-
-		if (accountStorage.containsKey(name)) {
+	public BankAccount addAccountToStorage(BankAccount account) {
+		if (accountStorage.containsKey(account.getAccountName())) {
 			System.out.println("Account name already exists.");
 			System.out.println("Enter valid account name:");
 			String newName = in.nextLine();
-			createBankAccount(newName);
-
+			BankAccount renamedAccount = new BankAccount();
+			renamedAccount.setAccountName(newName);
+			addAccountToStorage(renamedAccount);
 		}
-		accountStorage.put(name, newAccount);
+		accountStorage.put(account.getAccountName(), account);
 		System.out.print("Account successfully created!");
-		// displayAccountOptions();//Will handle depost/withdraw/transfer/delete
-		return newAccount;
+		// displayAccountOptions();//Will handle deposit/withdraw/transfer/delete
+		return account;
 	}
 
 	// Code that just displays stuff - no tests needed
@@ -57,33 +59,25 @@ public class Menu {
 			for (String key : accountStorage.keySet()) {
 				System.out.println(key);
 			}
-			// displayAccountOptions(); //Will handle depost/withdraw/transfer/delete
+			// displayAccountOptions(); //Will handle deposit/withdraw/transfer/delete
 		}
 	}
 
 	public void displayAccountOptions() {
-
-	}
-
-	public double getValidDepositInput() {
-		double amount = in.nextDouble();
-		while (amount < 0) {
-			System.out.println("Invalid value!");
-			System.out.println("How much money do you want to deposit?");
-			amount = in.nextDouble();
-		}
-		return amount;
+//implement later
 	}
 
 	public int getValidMainMenuInput() {
 		int input = in.nextInt();
 		in.nextLine(); 
 		if (input == 1) {
-			displayCurrentAccounts();
+			displayCurrentAccounts(); //section input from processing of input
 		} else if (input == 2) {
 			System.out.println("Enter name");
 			String name = in.nextLine();
-			createBankAccount(name);
+			BankAccount newAccount = new BankAccount();
+			newAccount.setAccountName(name);
+			addAccountToStorage(newAccount);
 		} else {
 			System.out.println("Invalid value!");
 			displayingOptions();
@@ -96,6 +90,16 @@ public class Menu {
 	public void deposit(double amount) {
 		account.deposit(amount);
 		System.out.println("Your balance is now: " + account.getBalance());
+	}
+	
+	public double getValidDepositInput() {
+		double amount = in.nextDouble();
+		while (amount < 0) {
+			System.out.println("Invalid value!");
+			System.out.println("How much money do you want to deposit?");
+			amount = in.nextDouble();
+		}
+		return amount;
 	}
 
 	public BankAccount getAccount() {
