@@ -19,7 +19,15 @@ public class BankAccount {
 		this.balance += amount;
 	}
 	
-	
+	public void withdraw(double amount) {
+	    if (amount <= 0) {
+	        throw new IllegalArgumentException("Amount must be positive");
+	    }
+	    if (this.balance < amount) {
+	        throw new IllegalArgumentException("Insufficient funds");
+	    }
+	    this.balance -= amount;
+	}
 	
 	//getters and setters - not tested
 	public double getBalance() {
