@@ -8,7 +8,6 @@ import bankapp.BankAccount;
 import bankapp.Menu;
 
 class MenuTests {
-
 	@Test
 	void testUserDeposit() {
 		Menu m = new Menu();
@@ -18,5 +17,7 @@ class MenuTests {
 		BankAccount account = m.getAccount();
 		assertEquals(50, account.getBalance(), 0.01);
 	}
+	
+
 
 }

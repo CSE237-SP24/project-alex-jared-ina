@@ -71,9 +71,29 @@ public class Menu {
 	        in.nextLine(); // Consume newline left-over
 	        switch (choice) {
 	        case 1:
-	        	
+	        	System.out.println("Enter the ammount you wish to deposit:");
+                double depositAmount  = in.nextDouble();
+                if (depositAmount > 0){
+                	account.deposit(depositAmount);
+                	System.out.println("Deposit successful. Your current balance is" +  account.getBalance());
+                }
+                else {
+                	System.out.println("Imput Invalid, please try again and enter a positive number.");
+                	break;
+                }
+                
 	        case 2:
-	        	
+	        	System.out.println("Enter the amount you wish to withdraw:");
+                double withdrawAmount  = in.nextDouble();
+                if (withdrawAmount > 0 && account.getBalance() >= withdrawAmount){
+                	account.withdraw(withdrawAmount);
+                	System.out.println("Withdrawal successful. Your current balance is" +  account.getBalance());
+                }
+                else {
+                	System.out.println("Imput Invalid, please try again and enter a number greater than your balance.");
+                	break;
+                }
+           
 	        case 3:
                 if (getNumAccounts() > 1) {
                     displayCurrentAccounts();
