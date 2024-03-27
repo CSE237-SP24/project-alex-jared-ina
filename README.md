@@ -41,12 +41,12 @@ Deposit, withdraw, and delete are the remaining cases in our interaction swith c
 ### 3) customer should be able to deposit money into a selected account
 
 #### This story includes:
-- 
+- Deposit implementation in the switch case method
 
 ### 5) customer should be able to withdraw money from a selected account
    
 #### This story includes:
-- 
+- withdraw implementation in the switch ase method
    
 ### 7) customer should be able to delete an account of their choice
    
