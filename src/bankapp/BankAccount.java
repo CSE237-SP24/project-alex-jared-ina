@@ -5,13 +5,11 @@ public class BankAccount {
 	private double balance;
 	private String accountName;
 	
-	//Constructors - not tested
 	public BankAccount() {
 		this.balance = 0;
 		this.accountName = " ";
 	}
 	
-	//public method doing some work - lots of tests
 	public void deposit(double amount) {
 		if(amount < 0) {
 			throw new IllegalArgumentException("Amount must be positive");
@@ -29,7 +27,6 @@ public class BankAccount {
 	    this.balance -= amount;
 	}
 	
-	//getters and setters - not tested
 	public double getBalance() {
 		return this.balance;
 	}
@@ -44,7 +41,6 @@ public class BankAccount {
 	}
 
 	public void setAccountName(String name) {
-		// TODO Auto-generated method stub
 		this.accountName = name;
 	}
 }

@@ -10,12 +10,9 @@ public class Menu {
 	private BankAccount account;
 	private Map<String, BankAccount> accountStorage = new HashMap<>();
 
-	// not tested
 	public static void main(String[] args) {
 		Menu mainMenu = new Menu();
 		mainMenu.displayingOptions();
-//		double amount = mainMenu.getValidMainMenuInput();
-//		mainMenu.processingUserSelection(amount);
 	}
 
 	public BankAccount addAccountToStorage(BankAccount account) {
@@ -29,11 +26,10 @@ public class Menu {
 		}
 		accountStorage.put(account.getAccountName(), account);
 		System.out.print("Account successfully created!");
-		//displayAccountOptions(account);//Will handle deposit/withdraw/transfer/delete
+		displayAccountOptions(account);//Will handle deposit/withdraw/transfer/delete
 		return account;
 	}
 
-	// Code that just displays stuff - no tests needed
 	public void displayingOptions() {
 		System.out.println("Menu:");
 		System.out.println("Enter 1 to view current accounts");
@@ -52,7 +48,7 @@ public class Menu {
             System.out.println("Enter the account name you would like to interact with");
             String ccountOfInterestName = in.nextLine();
             BankAccount accountOfInterest = selectAccount(ccountOfInterestName);
-			displayAccountOptions(accountOfInterest); //Will handle deposit/withdraw/transfer/delete
+			//displayAccountOptions(accountOfInterest); //Will handle deposit/withdraw/transfer/delete
 			displayingOptions();
 		}
 	}
@@ -68,7 +64,7 @@ public class Menu {
 	        System.out.println("4. Delete Account");
 	        System.out.println("5. Return to Main Menu");
 	        int choice = in.nextInt();
-	        in.nextLine(); // Consume newline left-over
+	        in.nextLine(); 
 	        switch (choice) {
 	        case 1:
 	        	System.out.println("Enter the ammount you wish to deposit:");
@@ -79,8 +75,8 @@ public class Menu {
                 }
                 else {
                 	System.out.println("Imput Invalid, please try again and enter a positive number.");
-                	break;
                 }
+            	break;
                 
 	        case 2:
 	        	System.out.println("Enter the amount you wish to withdraw:");
@@ -91,25 +87,29 @@ public class Menu {
                 }
                 else {
                 	System.out.println("Imput Invalid, please try again and enter a number greater than your balance.");
-                	break;
                 }
+            	break;
            
-	        case 3:
-                if (getNumAccounts() > 1) {
-                    displayCurrentAccounts();
-                    System.out.println("Enter the account name to transfer to:");
-                    String transferToAccountName = in.nextLine();
-                    if (accountStorage.containsKey(transferToAccountName) && !transferToAccountName.equals(account.getAccountName())) {
-                        System.out.println("Enter amount to transfer:");
-                        double transferAmount = getValidTransferInput(); 
-                        transfer(account, accountStorage.get(transferToAccountName), transferAmount); 
-                    } else {
-                        System.out.println("Invalid account name.");
-                    }
-                } else {
-                    System.out.println("No other accounts to transfer to.");
-                    break;
-                }
+			case 3:
+				if (getNumAccounts() > 1) {
+					displayCurrentAccounts();
+					System.out.println("Enter the account name to transfer to:");
+					String transferToAccountName = in.nextLine();
+					if (accountStorage.containsKey(transferToAccountName)
+							&& !transferToAccountName.equals(account.getAccountName())) {
+						System.out.println("Enter amount to transfer:");
+						double transferAmount = getValidTransferInput();
+						transfer(account, accountStorage.get(transferToAccountName), transferAmount);
+					} 
+					else {
+						System.out.println("Invalid account name.");
+					}
+				}
+				else {
+					System.out.println("No other accounts to transfer to.");
+				}
+				break;
+				
 	        case 4:
 	        	
 	        case 5:
