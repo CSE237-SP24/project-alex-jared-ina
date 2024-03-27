@@ -111,6 +111,17 @@ public class Menu {
                     break;
                 }
 	        case 4:
+	        	if (getNumAccounts() > 1) {
+	        		displayCurrentAccounts();
+                    if (accountStorage.containsKey(account.getAccountName())) {
+                        deleteAccount(account); 
+                    } else {
+                        System.out.println("Account not found.");
+                    }
+	        		
+	        	  		
+	        		
+	        	}
 	        	
 	        case 5:
 	        	exit = true;
@@ -155,6 +166,11 @@ public class Menu {
 	    } else {
 	        System.out.println("Insufficient balance in account " + from.getAccountName() + " to complete the transfer.");
 	    }
+	}
+	
+	public void deleteAccount(BankAccount account) {
+		accountStorage.remove(account.getAccountName());
+		System.out.println("Account sucessfully deleted. Returning to main menu");
 	}
 	
 	public void deposit(double amount) {
