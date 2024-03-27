@@ -53,7 +53,7 @@ Deposit, withdraw, and delete are the remaining cases in our interaction swith c
 #### This story includes:
 - edits to the Menu class and switch function imbedded within the displayAccountOptions() method
 - creation of the deleteAccount method which deletes a givin account out of the account storage hashmap with the use of remove() command
-- (no tests created yet at present moment)
+- two tests which test if user can delete existing and non-existing accounts
 
   ## What user stories do you intend to complete next iteration?
   
