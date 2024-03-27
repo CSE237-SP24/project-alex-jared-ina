@@ -25,8 +25,8 @@ public class Menu {
 			addAccountToStorage(renamedAccount);
 		}
 		accountStorage.put(account.getAccountName(), account);
-		System.out.print("Account successfully created!");
-		displayAccountOptions(account);//Will handle deposit/withdraw/transfer/delete
+		System.out.print("Account successfully created! Returning to main menu");
+		displayingOptions();
 		return account;
 	}
 
@@ -38,19 +38,27 @@ public class Menu {
 	}
 
 	public void displayCurrentAccounts() {
-		if (accountStorage.size() == 0) {
-			System.out.println("No current accounts. Returning to main menu");
-			displayingOptions();
-		} else {
-			for (String key : accountStorage.keySet()) {
-				System.out.println(key);
-			}
-            System.out.println("Enter the account name you would like to interact with");
-            String ccountOfInterestName = in.nextLine();
-            BankAccount accountOfInterest = selectAccount(ccountOfInterestName);
-			//displayAccountOptions(accountOfInterest); //Will handle deposit/withdraw/transfer/delete
-			displayingOptions();
-		}
+	    if (accountStorage.size() == 0) {
+	        System.out.println("No current accounts. Returning to main menu.");
+	    } 
+	    else {
+	        System.out.println("Current Accounts:");
+	        for (String key : accountStorage.keySet()) {
+	            System.out.println(key);
+	        }
+	        System.out.println("Enter the account name you would like to interact with, or type 'back' to return to the main menu:");
+	        String accountOfInterestName = in.nextLine();
+	        if ("back".equalsIgnoreCase(accountOfInterestName)) {
+	            displayingOptions();
+	        }
+	        BankAccount accountOfInterest = accountStorage.get(accountOfInterestName);
+	        if (accountOfInterest != null) {
+	            displayAccountOptions(accountOfInterest);
+	        } else {
+	            System.out.println("Account not found. Please try again.");
+	            displayCurrentAccounts(); 
+	        }
+	    }
 	}
 
 	public void displayAccountOptions(BankAccount account) {
@@ -91,40 +99,35 @@ public class Menu {
             	break;
            
 			case 3:
-				if (getNumAccounts() > 1) {
-					displayCurrentAccounts();
-					System.out.println("Enter the account name to transfer to:");
-					String transferToAccountName = in.nextLine();
-					if (accountStorage.containsKey(transferToAccountName)
-							&& !transferToAccountName.equals(account.getAccountName())) {
-						System.out.println("Enter amount to transfer:");
-						double transferAmount = getValidTransferInput();
-						transfer(account, accountStorage.get(transferToAccountName), transferAmount);
-					} 
-					else {
-						System.out.println("Invalid account name.");
-					}
-				}
-				else {
-					System.out.println("No other accounts to transfer to.");
-				}
-				break;
+			    if (getNumAccounts() > 1) {
+			        BankAccount transferToAccount = selectAccountForTransfer(account.getAccountName());
+			        if (transferToAccount != null) { 
+			            System.out.println("Enter amount to transfer:");
+			            double transferAmount = getValidTransferInput();
+			            transfer(account, transferToAccount, transferAmount);
+			        } else {
+			            System.out.println("Transfer cancelled or invalid selection.");
+			        }
+			    } else {
+			        System.out.println("No other accounts to transfer to.");
+			    }
+			    break;
 				
 	        case 4:
-	        	if (getNumAccounts() > 1) {
-	        		displayCurrentAccounts();
-                    if (accountStorage.containsKey(account.getAccountName())) {
-                        deleteAccount(account); 
-                    } else {
-                        System.out.println("Account not found.");
-                    }
-	        		  		
-	        		
-	        	}
+	            System.out.println("Are you sure you want to delete this account? (yes/no)");
+	            String confirmation = in.nextLine().trim().toLowerCase();
+	            if ("yes".equals(confirmation)) {
+	                deleteAccount(this.account); 
+	                exit = true; 
+	            } else {
+	                System.out.println("Account deletion cancelled.");
+	            }
+	            break;
 	        	
 	        case 5:
 	        	exit = true;
 	        	break;
+	        	
 	        default:
                 System.out.println("Invalid option. Please try again.");
                 break;
@@ -133,11 +136,37 @@ public class Menu {
 		}
 	}
 
+	public BankAccount selectAccountForTransfer(String currentAccountName) {
+	    System.out.println("Available accounts for transfer:");
+	    int accountIndex = 1;
+	    Map<Integer, String> accountIndexes = new HashMap<>();
+	    for (String accountName : accountStorage.keySet()) {
+	        if (!accountName.equals(currentAccountName)) {
+	            System.out.println(accountIndex + ". " + accountName);
+	            accountIndexes.put(accountIndex, accountName);
+	            accountIndex++;
+	        }
+	    }
+	    if (accountIndexes.isEmpty()) {
+	        System.out.println("No other accounts available for transfer.");
+	        return null;
+	    }
+	    System.out.println("Please enter the number of the account you wish to transfer to:");
+	    int selection = in.nextInt();
+	    in.nextLine();
+	    if (accountIndexes.containsKey(selection)) {
+	        return accountStorage.get(accountIndexes.get(selection));
+	    } else {
+	        System.out.println("Invalid selection.");
+	        return null;
+	    }
+	}
+	
 	public int getValidMainMenuInput() {
 		int input = in.nextInt();
 		in.nextLine(); 
 		if (input == 1) {
-			displayCurrentAccounts(); //section input from processing of input
+			displayCurrentAccounts(); 
 		} else if (input == 2) {
 			System.out.println("Enter name");
 			String name = in.nextLine();
@@ -168,8 +197,9 @@ public class Menu {
 	}
 	
 	public void deleteAccount(BankAccount account) {
-		accountStorage.remove(account.getAccountName());
-		System.out.println("Account sucessfully deleted. Returning to main menu");
+	    accountStorage.remove(account.getAccountName());
+	    System.out.println("Account successfully deleted. Returning to main menu.");
+	    displayingOptions();
 	}
 	
 	public void deposit(double amount) {

@@ -10,52 +10,40 @@ import org.junit.jupiter.api.Test;
 class TransferTests {
 
     private Menu menu;
-
+    private BankAccount fromAccount;
+    private BankAccount toAccount;
+    
     @BeforeEach
     void setUp() {
         menu = new Menu();
+        fromAccount = new BankAccount();
+        fromAccount.setAccountName("fromAccount");
+        fromAccount.deposit(1000);
+        toAccount = new BankAccount();
+        toAccount.setAccountName("toAccount");
+        toAccount.deposit(1000);
+        menu.addAccountToStorage(fromAccount);
+        menu.addAccountToStorage(toAccount);
+
     }
 	
     @Test
     void testSuccessfulTransfer() {
-        BankAccount fromAccount = new BankAccount();
-        fromAccount.setAccountName("FromAccount");
-        fromAccount.deposit(500);
-        BankAccount toAccount = new BankAccount();
-        toAccount.setAccountName("ToAccount");
-        menu.addAccountToStorage(fromAccount);
-        menu.addAccountToStorage(toAccount);
-
         menu.transfer(fromAccount, toAccount, 100);
-
-        assertEquals(400, fromAccount.getBalance());
-        assertEquals(100, toAccount.getBalance());
+        assertEquals(900, fromAccount.getBalance());
+        assertEquals(1100, toAccount.getBalance());
     }
     
     @Test
     void testTransferMoreThanBalance() {
-        BankAccount fromAccount = new BankAccount();
-        fromAccount.setAccountName("FromAccount");
-        fromAccount.deposit(200);
-        BankAccount toAccount = new BankAccount();
-        toAccount.setAccountName("ToAccount");
-        menu.addAccountToStorage(fromAccount);
-        menu.addAccountToStorage(toAccount);
-
-        menu.transfer(fromAccount, toAccount, 300);
-
-        assertEquals(200, fromAccount.getBalance(), "The balance should not change when attempting to transfer more than available.");
-        assertEquals(0, toAccount.getBalance(), "No amount should be transferred to the destination account.");
+        menu.transfer(fromAccount, toAccount, 3000);
+        assertEquals(1000, fromAccount.getBalance(), "The balance should not change when attempting to transfer more than available.");
+        assertEquals(1000, toAccount.getBalance(), "No amount should be transferred to the destination account.");
     }
     
     @Test
     void testTransferToSameAccount() {
-        BankAccount account = new BankAccount();
-        account.setAccountName("SingleAccount");
-        account.deposit(300);
-        menu.addAccountToStorage(account);
-
-        assertThrows(IllegalArgumentException.class, () -> menu.transfer(account, account, 100), "Transferring to the same account should not be allowed.");
+        assertThrows(IllegalArgumentException.class, () -> menu.transfer(fromAccount, fromAccount, 100), "Transferring to the same account should not be allowed.");
     }
 	
 }
