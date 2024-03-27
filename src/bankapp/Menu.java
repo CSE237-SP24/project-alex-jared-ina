@@ -29,7 +29,7 @@ public class Menu {
 		}
 		accountStorage.put(account.getAccountName(), account);
 		System.out.print("Account successfully created!");
-		// displayAccountOptions();//Will handle deposit/withdraw/transfer/delete
+		//displayAccountOptions(account);//Will handle deposit/withdraw/transfer/delete
 		return account;
 	}
 
@@ -88,6 +88,7 @@ public class Menu {
                     }
                 } else {
                     System.out.println("No other accounts to transfer to.");
+                    break;
                 }
 	        case 4:
 	        	
@@ -98,6 +99,7 @@ public class Menu {
                 System.out.println("Invalid option. Please try again.");
                 break;
 		}
+	        displayingOptions();
 		}
 	}
 
