@@ -40,6 +40,7 @@ public class Menu {
 	public void displayCurrentAccounts() {
 	    if (accountStorage.size() == 0) {
 	        System.out.println("No current accounts. Returning to main menu.");
+	        displayingOptions();
 	    } 
 	    else {
 	        System.out.println("Current Accounts:");
