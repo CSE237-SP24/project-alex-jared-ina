@@ -93,16 +93,13 @@ public class Menu {
 	        case 4:
 	        	if (getNumAccounts() > 1) {
 	        		displayCurrentAccounts();
-	        		System.out.println("Enter the name of the account you would like to delete:");
-	        		String deleteAccountName = in.nextLine();
-                    if (accountStorage.containsKey(deleteAccountName)) {
-                        deleteAccount(deleteAccountName); 
+                    if (accountStorage.containsKey(account.getAccountName())) {
+                        deleteAccount(account); 
                     } else {
                         System.out.println("Account not found.");
                     }
 	        		
-	        		
-	        		
+	        	  		
 	        		
 	        	}
 	        	
@@ -151,10 +148,9 @@ public class Menu {
 	    }
 	}
 	
-	public void deleteAccount(String accountName) {
-		accountStorage.remove(accountName);
+	public void deleteAccount(BankAccount account) {
+		accountStorage.remove(account.getAccountName());
 		System.out.println("Account sucessfully deleted. Returning to main menu");
-		displayingOptions();
 	}
 	
 	public void deposit(double amount) {
