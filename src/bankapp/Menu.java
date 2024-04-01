@@ -38,109 +38,75 @@ public class Menu {
 	}
 
 	public void displayCurrentAccounts() {
-	    if (accountStorage.size() == 0) {
-	        System.out.println("No current accounts. Returning to main menu.");
-	        displayingOptions();
-	    } 
-	    else {
-	        System.out.println("Current Accounts:");
-	        for (String key : accountStorage.keySet()) {
-	            System.out.println(key);
-	        }
-	        System.out.println("Enter the account name you would like to interact with, or type 'back' to return to the main menu:");
-	        String accountOfInterestName = in.nextLine();
-	        if ("back".equalsIgnoreCase(accountOfInterestName)) {
-	            displayingOptions();
-	        }
-	        BankAccount accountOfInterest = accountStorage.get(accountOfInterestName);
-	        if (accountOfInterest != null) {
-	            displayAccountOptions(accountOfInterest);
-	        } else {
-	            System.out.println("Account not found. Please try again.");
-	            displayCurrentAccounts(); 
-	        }
-	    }
+		if (accountStorage.size() == 0) {
+			System.out.println("No current accounts. Returning to main menu.");
+			displayingOptions();
+		} else {
+			System.out.println("Current Accounts:");
+			for (String key : accountStorage.keySet()) {
+				System.out.println(key);
+			}
+		}
+		selectCurrentAccount();
+	}
+
+	public void selectCurrentAccount() {
+		System.out.println(
+				"Enter the account name you would like to interact with, or type 'back' to return to the main menu:");
+		String accountOfInterestName = in.nextLine();
+		if ("back".equalsIgnoreCase(accountOfInterestName)) {
+			displayingOptions();
+		}
+		BankAccount accountOfInterest = accountStorage.get(accountOfInterestName);
+		if (accountOfInterest != null) {
+			displayAccountOptions(accountOfInterest);
+		} else {
+			System.out.println("Account not found. Please try again.");
+			displayCurrentAccounts();
+		}
 	}
 
 	public void displayAccountOptions(BankAccount account) {
 		this.account = account;
-		boolean exit = false;
-		while(!exit) {
-	        System.out.println("\nAccount Options for: " + account.getAccountName());
-	        System.out.println("1. Deposit");
-	        System.out.println("2. Withdraw");
-	        System.out.println("3. Transfer");
-	        System.out.println("4. Delete Account");
-	        System.out.println("5. Return to Main Menu");
-	        int choice = in.nextInt();
-	        in.nextLine(); 
-	        switch (choice) {
-	        case 1:
-	        	System.out.println("Enter the ammount you wish to deposit:");
-                double depositAmount  = in.nextDouble();
-                if (depositAmount > 0){
-                	account.deposit(depositAmount);
-                	System.out.println("Deposit successful. Your current balance is" +  account.getBalance());
-                }
-                else {
-                	System.out.println("Imput Invalid, please try again and enter a positive number.");
-                }
-            	break;
-                
-	        case 2:
-	        	System.out.println("Enter the amount you wish to withdraw:");
-                double withdrawAmount  = in.nextDouble();
-                if (withdrawAmount > 0 && account.getBalance() >= withdrawAmount){
-                	account.withdraw(withdrawAmount);
-                	System.out.println("Withdrawal successful. Your current balance is" +  account.getBalance());
-                }
-                else {
-                	System.out.println("Imput Invalid, please try again and enter a number greater than your balance.");
-                }
-            	break;
-           
-			case 3:
-			    if (getNumAccounts() > 1) {
-			        BankAccount transferToAccount = selectAccountForTransfer(account.getAccountName());
-			        if (transferToAccount != null) { 
-			            System.out.println("Enter amount to transfer:");
-			            double transferAmount = getValidTransferInput();
-			            transfer(account, transferToAccount, transferAmount);
-			        } else {
-			            System.out.println("Transfer cancelled or invalid selection.");
-			        }
-			    } else {
-			        System.out.println("No other accounts to transfer to.");
-			    }
-			    break;
-				
-	        case 4:
-	            System.out.println("Are you sure you want to delete this account? (yes/no)");
-	            String confirmation = in.nextLine().trim().toLowerCase();
-	            if ("yes".equals(confirmation)) {
-	                deleteAccount(this.account); 
-	                exit = true; 
-	            } else {
-	                System.out.println("Account deletion cancelled.");
-	            }
-	            break;
-	        	
-	        case 5:
-	        	exit = true;
-	        	break;
-	        	
-	        default:
-                System.out.println("Invalid option. Please try again.");
-                break;
+		int choice = printAccountOptions();
+		switch (choice) {
+		case 1:
+			handleDeposit(this.account);
+			break;
+		case 2:
+			handleWithdraw(this.account);
+			break;
+		case 3:
+			handleTransfer(this.account);
+			break;
+		case 4:
+			handleDeleteAccount(this.account);
+			break;
+		case 5:
+			break;
+		default:
+			System.out.println("Invalid option. Please try again.");
+			break;
 		}
-	        displayingOptions();
-		}
+		displayingOptions();
 	}
-
-	public BankAccount selectAccountForTransfer(String currentAccountName) {
+	
+	public int printAccountOptions() {
+		System.out.println("\nAccount Options for: " + account.getAccountName());
+		System.out.println("1. Deposit");
+		System.out.println("2. Withdraw");
+		System.out.println("3. Transfer");
+		System.out.println("4. Delete Account");
+		System.out.println("5. Return to Main Menu");
+		int choice = in.nextInt();
+		in.nextLine();
+		return choice;
+	}
+	
+	private BankAccount displayAccountsForTransfer(String currentAccountName) {
 	    System.out.println("Available accounts for transfer:");
-	    int accountIndex = 1;
 	    Map<Integer, String> accountIndexes = new HashMap<>();
+	    int accountIndex = 1;
 	    for (String accountName : accountStorage.keySet()) {
 	        if (!accountName.equals(currentAccountName)) {
 	            System.out.println(accountIndex + ". " + accountName);
@@ -148,6 +114,10 @@ public class Menu {
 	            accountIndex++;
 	        }
 	    }
+	    return selectAccountForTransfer(accountIndexes);
+	}
+	
+	private BankAccount selectAccountForTransfer(Map<Integer, String> accountIndexes) {
 	    if (accountIndexes.isEmpty()) {
 	        System.out.println("No other accounts available for transfer.");
 	        return null;
@@ -227,6 +197,59 @@ public class Menu {
 		}
 		in.nextLine();
 		return amount;
+	}
+	
+	public double getValidWithdrawInput() {
+		double withdrawAmount = in.nextDouble();
+		boolean validInput = false;
+		while (validInput == false) {
+	    if (withdrawAmount > 0 && account.getBalance() >= withdrawAmount) {
+	    	validInput = true;
+	    } 
+	    else {
+	        System.out.println("Input Invalid, please try again and ensure the amount is greater than 0 and less than your current balance.");
+	    }
+	}
+		return withdrawAmount;
+	}
+	
+	public void handleDeposit(BankAccount account) {
+    	System.out.println("Enter the ammount you wish to deposit:");
+        double depositAmount  = getValidDepositInput();
+        account.deposit(depositAmount);
+        System.out.println("Deposit successful. Your current balance is $" +  account.getBalance());
+	}
+	
+	public void handleWithdraw(BankAccount account) {
+	    System.out.println("Enter the amount you wish to withdraw:");
+	    double validWithdrawAmount = getValidWithdrawInput();
+        account.withdraw(validWithdrawAmount);
+        System.out.println("Withdrawal successful. Your current balance is $" + account.getBalance());
+	}
+	
+	private void handleTransfer(BankAccount fromAccount) {
+	    if (getNumAccounts() > 1) {
+	    	BankAccount transferToAccount = displayAccountsForTransfer(fromAccount.getAccountName());
+	        if (transferToAccount != null) {
+	            System.out.println("Enter amount to transfer:");
+	            double transferAmount = getValidTransferInput();
+	            transfer(fromAccount, transferToAccount, transferAmount);
+	        } else {
+	            System.out.println("Transfer cancelled or invalid selection.");
+	        }
+	    } else {
+	        System.out.println("No other accounts to transfer to.");
+	    }
+	}
+	
+	private void handleDeleteAccount(BankAccount account) {
+		System.out.println("Are you sure you want to delete this account? (yes/no)");
+		String confirmation = in.nextLine().trim().toLowerCase();
+		if ("yes".equals(confirmation)) {
+			deleteAccount(account);
+		} else {
+			System.out.println("Account deletion cancelled.");
+		}
 	}
 	
 	public double getValidTransferInput() {
