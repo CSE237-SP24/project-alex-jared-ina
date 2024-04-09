@@ -33,4 +33,22 @@ public class User {
     public Map<String, BankAccount> getAccounts() {
         return accounts;
     }
+    
+
+	public void transfer(BankAccount from, BankAccount to, double amount) {
+		if(from == to) {
+			throw new IllegalArgumentException("Cant transfer to and from same account");
+		}
+	    if (from.getBalance() >= amount) {
+	        from.withdraw(amount); 
+	        to.deposit(amount);
+	        System.out.println("Transferred $" + amount + " from " + from.getAccountName() + " to " + to.getAccountName());
+	        System.out.println("New balance of " + from.getAccountName() + ": $" + from.getBalance());
+	        System.out.println("New balance of " + to.getAccountName() + ": $" + to.getBalance());
+	    } else {
+	        System.out.println("Insufficient balance in account " + from.getAccountName() + " to complete the transfer.");
+	    }
+	}
+	
+	
 }

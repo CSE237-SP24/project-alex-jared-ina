@@ -157,6 +157,9 @@ public class Menu {
 	                handleTransfer(account);
 	                break;
 	            case 5:
+	                viewBalance(account);
+	                break;
+	            case 6:
 	                return; // Exit to the main menu
 	            default:
 	                System.out.println("Invalid option. Please try again.");
@@ -170,7 +173,8 @@ public class Menu {
 		System.out.println("2. Withdraw");
 		System.out.println("3. Delete Account");
 		System.out.println("4. Transfer");
-		System.out.println("5. Return to Main Menu");
+		System.out.println("5. Get Account Balance");
+		System.out.println("6. Return to Main Menu");
 		int choice = in.nextInt();
 		in.nextLine();
 		return choice;
@@ -188,6 +192,11 @@ public class Menu {
 	        }
 	    }
 	    return selectAccountForTransfer(accountIndexes);
+	}
+	
+	public void viewBalance(BankAccount account) {
+	    System.out.println("Your Balance is: " + account.getBalance() + "$");
+	    return;
 	}
 
 	private BankAccount selectAccountForTransfer(Map<Integer, String> accountIndexes) {
@@ -212,20 +221,6 @@ public class Menu {
 	}
 	
 
-	public void transfer(BankAccount from, BankAccount to, double amount) {
-		if(from == to) {
-			throw new IllegalArgumentException("Cant transfer to and from same account");
-		}
-	    if (from.getBalance() >= amount) {
-	        from.withdraw(amount); 
-	        to.deposit(amount);
-	        System.out.println("Transferred $" + amount + " from " + from.getAccountName() + " to " + to.getAccountName());
-	        System.out.println("New balance of " + from.getAccountName() + ": $" + from.getBalance());
-	        System.out.println("New balance of " + to.getAccountName() + ": $" + to.getBalance());
-	    } else {
-	        System.out.println("Insufficient balance in account " + from.getAccountName() + " to complete the transfer.");
-	    }
-	}
 	
 	public double getValidDepositInput() {
 		double amount = in.nextDouble();
@@ -281,7 +276,7 @@ public class Menu {
 	        System.out.println("Enter amount to transfer:");
 	        double transferAmount = getValidTransferInput();
 	        try {
-	            transfer(fromAccount, toAccount, transferAmount);
+	        	currentUser.transfer(fromAccount, toAccount, transferAmount);
 	        } catch (IllegalArgumentException e) {
 	            System.out.println(e.getMessage());
 	        }
@@ -289,6 +284,7 @@ public class Menu {
 	        System.out.println("No other accounts available for transfer.");
 	    }
 	}
+	
 	
 	private void handleDeleteAccount(BankAccount account) {
         System.out.print("Are you sure you want to delete this account? (yes/no): ");

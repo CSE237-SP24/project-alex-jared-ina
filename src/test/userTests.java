@@ -1,10 +1,14 @@
 package test;
+import bankapp.BankAccount;
+import bankapp.User;
+import bankapp.Menu;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import bankapp.BankAccount;
+import bankapp.Menu;
 import bankapp.User;
 
 class userTests {
@@ -12,6 +16,8 @@ class userTests {
     private User user;
     private BankAccount account1;
     private BankAccount account2;
+
+
 
     @BeforeEach
     void setUp() {
@@ -55,5 +61,7 @@ class userTests {
         assertNull(user.getAccount("Checking"), "The account should be deleted.");
         assertEquals(1, user.getAccounts().size(), "Accounts size should be 1 after deletion.");
     }
+    
+    
 
 }
