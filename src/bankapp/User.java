@@ -37,7 +37,7 @@ public class User {
 
 	public void transfer(BankAccount from, BankAccount to, double amount) {
 		if(from == to) {
-			throw new IllegalArgumentException("Cant transfer to and from same account");
+			throw new IllegalArgumentException("Can't transfer to and from same account");
 		}
 	    if (from.getBalance() >= amount) {
 	        from.withdraw(amount); 
@@ -50,5 +50,20 @@ public class User {
 	    }
 	}
 	
+	public void merge(BankAccount from, BankAccount to) {
+		if(from == to) {
+			throw new IllegalArgumentException("Can't merge with the same account");
+		}
+			double amount = from.getBalance();
+	        from.withdraw(amount); 
+	        to.deposit(amount);
+	        System.out.println("Merged $" + amount + " from " + from.getAccountName() + " to " + to.getAccountName());
+	        System.out.println("New balance of " + to.getAccountName() + ": $" + to.getBalance());
+	        System.out.println(from.getAccountName() + " has been deleted."); 
+	        accounts.remove(from.getAccountName());
+	    }
+	}
 	
-}
+	
+	
+

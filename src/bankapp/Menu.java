@@ -158,12 +158,15 @@ public class Menu {
 	                handleDeleteAccount(account);
 	                return; // Exit to the main menu after deleting an account
 	            case 4:
+	            	handleMergeAccount(account);
+	            	break;
+	            case 5:
 	                handleTransfer(account);
 	                break;
-	            case 5:
+	            case 6:
 	                viewBalance(account);
 	                break;
-	            case 6:
+	            case 7:
 	                return; // Exit to the main menu
 	            default:
 	                System.out.println("Invalid option. Please try again.");
@@ -176,9 +179,10 @@ public class Menu {
 		System.out.println("1. Deposit");
 		System.out.println("2. Withdraw");
 		System.out.println("3. Delete Account");
-		System.out.println("4. Transfer");
-		System.out.println("5. Get Account Balance");
-		System.out.println("6. Return to Main Menu");
+		System.out.println("4. Merge Account");
+		System.out.println("5. Transfer");
+		System.out.println("6. Get Account Balance");
+		System.out.println("7. Return to Main Menu");
 		int choice = in.nextInt();
 		in.nextLine();
 		return choice;
@@ -197,6 +201,8 @@ public class Menu {
 	    }
 	    return selectAccountForTransfer(accountIndexes);
 	}
+	
+
 	
 	public void viewBalance(BankAccount account) {
 	    System.out.println("Your Balance is: " + account.getBalance() + "$");
@@ -299,6 +305,28 @@ public class Menu {
         } else {
             System.out.println("Account deletion cancelled.");
         }
+	}
+	
+	private void handleMergeAccount(BankAccount fromAccount) {
+		if (currentUser.getAccounts().size() > 1) {
+	        System.out.println("Enter the account name you would like to merge with:");
+	        String accountName = in.nextLine();
+	        if (currentUser.getAccounts().containsKey(accountName)==false){
+	        	System.out.println("Cannot merge with nonexistent account.");
+	        	return;
+	        }
+	        else {
+	        	BankAccount toAccount = currentUser.getAccounts().get(accountName);
+		        try {
+		        	currentUser.merge(fromAccount,toAccount);
+		        } catch (IllegalArgumentException e) {
+		            System.out.println(e.getMessage());
+		        }
+	        }
+	        
+	    } else {
+	        System.out.println("No other accounts available for transfer.");
+	    }
 	}
 	
 	public double getValidTransferInput() {
