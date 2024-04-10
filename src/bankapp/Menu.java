@@ -81,7 +81,8 @@ public class Menu {
         System.out.println("Menu:");
         System.out.println("Enter 1 to view current accounts");
         System.out.println("Enter 2 to create new account");
-        System.out.println("Enter 3 to logout");
+        System.out.println("Enter 3 to delete current user");
+        System.out.println("Enter 4 to logout");
         int choice = in.nextInt();
         in.nextLine(); 
         switch (choice) {
@@ -92,6 +93,9 @@ public class Menu {
                 createNewAccount();
                 break;
             case 3:
+            	deleteUser(currentUser);
+            	break;
+            case 4:
                 currentUser = null;
                 System.out.println("Logged out.");
                 break;
@@ -305,6 +309,22 @@ public class Menu {
 	    }
 	    in.nextLine(); 
 	    return amount;
+	}
+	
+	public void deleteUser(User user) {
+		System.out.print("Are you sure you want to delete this user? This action cannot be undone! (yes/no): ");
+        String confirmation = in.nextLine().trim().toLowerCase();
+        if ("yes".equals(confirmation)) {
+        	currentUser.getAccounts().clear();
+            users.remove(user.getUsername());
+            System.out.println("User successfully deleted. Returning to login screen");
+            currentUser = null;
+        } else {
+            System.out.println("User deletion cancelled.");
+        }
+		
+		
+		
 	}
 	
 }
