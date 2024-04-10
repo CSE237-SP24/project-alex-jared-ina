@@ -68,3 +68,29 @@ The big story to complete is the debug main Menu as our backend tests work but t
 Our Menu interaction with users is still buggy in many cases and will be fixed
 
 ## What commands are needed to compile and run your code from the command line (or better yet, provide a script that people can use to run your program!)
+
+# Iteration 2
+
+## What user stories were completed this iteration?
+### The bulk of our work this iteration was focused around the implementation of User logins
+#### This included the following stories:
+- System should be able to store many users
+- Users should have a username and password
+- Users should access all their accounts after logging in
+
+All of this work was done in a singular branch due to the intertwined nature of these individual stories
+This work included a major refactoring of our entire code and the creation of a new User class
+Instead of all accounts being stored in one storage map structure they are now stored in an individual map for each user
+This change in storage method lead to changes (ranging from one line to nearly remaking the method) throughout our menu class
+
+### We also tackled changes from our Iteraiton 1 feedback mainly focused around refactoring and testing
+These changes included new tests due to the new implementation of our user storage and refactoring our main switch case method that deals with account interation
+
+### We also added balance viewing as an option of account interation
+Self explanatory 
+
+## What user stories do you intend to complete next iteration?
+We currently have all of our user stories completed and will work to brainstorm new functionality for the next iteration. 
+
+## Is there anything that you implemented but doesn't currently work?
+Everything implemented currently is functional however we need to finish polishing up the tests.
