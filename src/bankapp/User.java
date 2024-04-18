@@ -41,8 +41,8 @@ public class User {
 			throw new IllegalArgumentException("Can't transfer to and from same account");
 		}
 	    if (from.getBalance() >= amount) {
-	        from.withdraw(amount); 
-	        to.deposit(amount);
+	    	from.withdraw(amount, false); 
+	    	to.deposit(amount, false);    
 	        
 	        String transferOutMessage = "Transferred $" + amount + " to " + to.getAccountName();
 	        String transferInMessage = "Received $" + amount + " from " + from.getAccountName();
