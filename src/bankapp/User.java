@@ -7,6 +7,7 @@ public class User {
     private String username;
     private String password; 
     private Map<String, BankAccount> accounts; 
+    
 
     public User(String username, String password) {
         this.username = username;
@@ -42,6 +43,12 @@ public class User {
 	    if (from.getBalance() >= amount) {
 	        from.withdraw(amount); 
 	        to.deposit(amount);
+	        
+	        String transferOutMessage = "Transferred $" + amount + " to " + to.getAccountName();
+	        String transferInMessage = "Received $" + amount + " from " + from.getAccountName();
+	        from.getTransactions().add(transferOutMessage);  
+	        to.getTransactions().add(transferInMessage);    
+	        
 	        System.out.println("Transferred $" + amount + " from " + from.getAccountName() + " to " + to.getAccountName());
 	        System.out.println("New balance of " + from.getAccountName() + ": $" + from.getBalance());
 	        System.out.println("New balance of " + to.getAccountName() + ": $" + to.getBalance());

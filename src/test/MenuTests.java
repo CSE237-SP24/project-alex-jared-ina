@@ -28,7 +28,6 @@ class MenuTests {
 	 }
 	 
 	 
-	
 	 @Test
 	    void deleteUserOneAccount() {
 		 	user1.addAccount(account1);
@@ -50,8 +49,6 @@ class MenuTests {
 		 assertEquals(0, user1.getAccounts().size());
 	 }
 		 
-		 
-		 	
 	 
 	 @Test
 	    void deleteUserNoAccounts() {

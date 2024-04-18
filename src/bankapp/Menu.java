@@ -13,6 +13,7 @@ public class Menu {
 	public Menu() {
 		displayLoginMenu();
 	}
+	
 	public static void main(String[] args) {
 		new Menu();
 	}
@@ -167,6 +168,9 @@ public class Menu {
 	                viewBalance(account);
 	                break;
 	            case 7:
+	            	viewTransactionHistory(account);
+	            	break;
+	            case 8:
 	                return; // Exit to the main menu
 	            default:
 	                System.out.println("Invalid option. Please try again.");
@@ -182,7 +186,8 @@ public class Menu {
 		System.out.println("4. Merge Account");
 		System.out.println("5. Transfer");
 		System.out.println("6. Get Account Balance");
-		System.out.println("7. Return to Main Menu");
+		System.out.println("7. View Transaction History");
+		System.out.println("8. Return to Main Menu");
 		int choice = in.nextInt();
 		in.nextLine();
 		return choice;
@@ -202,8 +207,16 @@ public class Menu {
 	    return selectAccountForTransfer(accountIndexes);
 	}
 	
-
-	
+	 private void viewTransactionHistory(BankAccount account) {
+	        if (account != null) {
+	            System.out.println("Transaction history for " + account.getAccountName() + ":");
+	            for (String transaction : account.getTransactions()) {
+	                System.out.println(transaction);
+	            }
+	        } else {
+	            System.out.println("Account not found.");
+	        }
+	    }
 	public void viewBalance(BankAccount account) {
 	    System.out.println("Your Balance is: " + account.getBalance() + "$");
 	    return;
