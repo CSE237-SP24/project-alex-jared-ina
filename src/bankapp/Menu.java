@@ -16,9 +16,14 @@ public class Menu {
 				System.out.println("2. Register");
 				System.out.println("3. Exit");
 				System.out.print("Choose an option: ");
-				int choice = scanner.nextInt();
-				scanner.nextLine();
-
+		        String input = scanner.nextLine();  // Read the entire line of input
+		        int choice = 0;
+		        try {
+		            choice = Integer.parseInt(input);  // Attempt to parse the input as an integer
+		        } catch (NumberFormatException e) {
+		            System.out.println("Invalid input. Please enter a number.");
+		            continue;  // Skip the rest of the loop iteration and prompt again
+		        }
 				switch (choice) {
 				case 1:
 					loginUser();

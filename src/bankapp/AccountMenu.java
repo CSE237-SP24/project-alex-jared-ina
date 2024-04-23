@@ -68,7 +68,7 @@ public class AccountMenu {
 				return; // Exit to the main menu after deleting an account
 			case 4:
 				handleMergeAccount(account);
-				break;
+				return;
 			case 5:
 				handleTransfer(account);
 				break;
@@ -87,18 +87,25 @@ public class AccountMenu {
 	}
 
 	public int printAccountOptions(BankAccount account) {
-		System.out.println("Account Options for: " + account.getAccountName());
-		System.out.println("1. Deposit");
-		System.out.println("2. Withdraw");
-		System.out.println("3. Delete Account");
-		System.out.println("4. Merge Account");
-		System.out.println("5. Transfer");
-		System.out.println("6. Get Account Balance");
-		System.out.println("7. View Transaction History");
-		System.out.println("8. Return to Main Menu");
-		int choice = scanner.nextInt();
-		scanner.nextLine();
-		return choice;
+	    System.out.println("Account Options for: " + account.getAccountName());
+	    System.out.println("1. Deposit");
+	    System.out.println("2. Withdraw");
+	    System.out.println("3. Delete Account");
+	    System.out.println("4. Merge Account");
+	    System.out.println("5. Transfer");
+	    System.out.println("6. Get Account Balance");
+	    System.out.println("7. View Transaction History");
+	    System.out.println("8. Return to Main Menu");
+
+	    while (true) {
+	        System.out.print("Enter your choice: ");
+	        String input = scanner.nextLine(); // Capture the whole line of input as a string
+	        try {
+	            return Integer.parseInt(input); // Attempt to parse the input as an integer
+	        } catch (NumberFormatException e) {
+	            System.out.println("Invalid input. Please enter a number.");
+	        }
+	    }
 	}
 
 	private BankAccount displayAccountsForTransfer(String currentAccountName) {
@@ -148,7 +155,7 @@ public class AccountMenu {
 	}
 
 	public void viewBalance(BankAccount account) {
-		System.out.println("Your Balance is: " + account.getBalance() + "$");
+		System.out.println("Your Balance is: $" + account.getBalance());
 		return;
 	}
 

@@ -23,9 +23,14 @@ public class UserMenu extends Menu{
 			System.out.println("Enter 2 to create new account");
 			System.out.println("Enter 3 to delete current user");
 			System.out.println("Enter 4 to logout");
-			int choice = scanner.nextInt();
-			scanner.nextLine();
-
+	        String input = scanner.nextLine();  // Read the entire line of input
+	        int choice = 0;
+	        try {
+	            choice = Integer.parseInt(input);  // Attempt to parse the input as an integer
+	        } catch (NumberFormatException e) {
+	            System.out.println("Invalid input. Please enter a number.");
+	            continue;  // Skip the rest of the loop iteration and prompt again
+	        }
 			switch (choice) {
 			case 1:
 				accountMenu.displayCurrentAccounts();
