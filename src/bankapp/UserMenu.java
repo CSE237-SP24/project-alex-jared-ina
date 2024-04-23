@@ -3,8 +3,9 @@ package bankapp;
 import java.util.Map;
 import java.util.Scanner;
 
-public class UserMenu {
+public class UserMenu extends Menu{
 	private User currentUser;
+	//private Menu menu;
 	private Map<String, User> users;
 	private Scanner scanner;
 
@@ -12,9 +13,10 @@ public class UserMenu {
 		this.currentUser = currentUser;
 		this.users = users;
 		this.scanner = scanner;
+		//this.menu = menu;
 	}
 
-	public void displayUserMenu() {
+	public boolean displayUserMenu() {
 		AccountMenu accountMenu = new AccountMenu(currentUser, scanner);
 
 		while (currentUser != null) {
@@ -44,6 +46,7 @@ public class UserMenu {
 				System.out.println("Invalid option. Please try again.");
 			}
 		}
+		return currentUser == null;
 	}
 
 	private void deleteUser(User user) {
@@ -54,6 +57,7 @@ public class UserMenu {
 			users.remove(user.getUsername());
 			System.out.println("User successfully deleted. Returning to login screen");
 			currentUser = null;
+			//menu.displayMainMenu();
 		} else {
 			System.out.println("User deletion cancelled.");
 		}
