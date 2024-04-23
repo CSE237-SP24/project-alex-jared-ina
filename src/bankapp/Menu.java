@@ -171,6 +171,12 @@ public class Menu {
 	            	viewTransactionHistory(account);
 	            	break;
 	            case 8:
+	            	handleTakeLoan(account);
+	            	break;
+	            case 9:
+	            	handleLoanPayment(account);
+	            	break;
+	            case 10:
 	                return; // Exit to the main menu
 	            default:
 	                System.out.println("Invalid option. Please try again.");
@@ -187,7 +193,9 @@ public class Menu {
 		System.out.println("5. Transfer");
 		System.out.println("6. Get Account Balance");
 		System.out.println("7. View Transaction History");
-		System.out.println("8. Return to Main Menu");
+		System.out.println("8. Take out a loan");
+		System.out.println("9. Make a loan payment");
+		System.out.println("10. Return to Main Menu");
 		int choice = in.nextInt();
 		in.nextLine();
 		return choice;
@@ -217,9 +225,34 @@ public class Menu {
 	            System.out.println("Account not found.");
 	        }
 	    }
+	 
 	public void viewBalance(BankAccount account) {
-	    System.out.println("Your Balance is: " + account.getBalance() + "$");
+	    System.out.println("Your Balance is: $" + account.getBalance());
+	    if(account.getLoanAmount() > 0) {
+	    	System.out.println(account.getLoanDetails());
+	    }
 	    return;
+	}
+	
+	private void handleLoanPayment(BankAccount account) {
+		if(account.getLoanAmount() == 0) {
+			System.out.println("No loan to make a payment on");
+			return;
+		}
+		else {
+			System.out.println("Your loan payment is $" + account.calculateMonthlyPayment());
+	        System.out.println("Are you sure you want to make this payment? (yes/no): ");
+	        String confirmation = in.nextLine().trim().toLowerCase();
+	        if ("yes".equals(confirmation) && account.getBalance() > account.calculateMonthlyPayment()) {
+	        	account.makePayment();
+	        	System.out.println("Payment made successfully!");
+	        	System.out.println("Current loan details: " + account.getLoanDetails());
+	        }
+	        else {
+	        	System.out.println("insufficient balance or payment cancelled");
+	        }
+	        return;
+		}
 	}
 
 	private BankAccount selectAccountForTransfer(Map<Integer, String> accountIndexes) {
@@ -243,7 +276,18 @@ public class Menu {
 	    }
 	}
 	
-
+	private void handleTakeLoan(BankAccount account) {
+	    System.out.print("Enter loan amount: ");
+	    double amount = in.nextDouble();
+	    System.out.print("Enter loan period (12, 36, or 60 months): ");
+	    int period = in.nextInt();
+	    if (period == 12 || period == 36 || period == 60) {
+	        account.takeLoan(amount, period);
+	        System.out.println("Loan taken successfully!");
+	    } else {
+	        System.out.println("Invalid loan period. Only 12, 36, or 60 months are allowed.");
+	    }
+	}
 	
 	public double getValidDepositInput() {
 		double amount = in.nextDouble();
