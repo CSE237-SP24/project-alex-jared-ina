@@ -11,7 +11,6 @@ public class Menu {
 
 	public void displayMainMenu() {
 		while (true) {
-			if (currentUser == null) {
 				System.out.println("Welcome to the Alex Jared Ina Bank App");
 				System.out.println("1. Login");
 				System.out.println("2. Register");
@@ -33,18 +32,16 @@ public class Menu {
 				default:
 					System.out.println("Invalid option. Please try again.");
 				}
-			}
+			
 
-			if (currentUser != null) {
-
-				UserMenu userMenu = new UserMenu(currentUser, users, scanner);
-				boolean showLogin = userMenu.displayUserMenu();
-				if (!showLogin) {
-					break;
-				}
-			}
+			UserMenu userMenu = new UserMenu(currentUser, users, scanner);
+			userMenu.displayUserMenu();
+			
 		}
 	}
+	
+		
+	
 
 	private void loginUser() {
 		System.out.println("Username:");
@@ -80,4 +77,5 @@ public class Menu {
 		Menu menu = new Menu();
 		menu.displayMainMenu();
 	}
+	
 }

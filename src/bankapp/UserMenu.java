@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class UserMenu extends Menu{
 	private User currentUser;
-	//private Menu menu;
 	private Map<String, User> users;
 	private Scanner scanner;
 
@@ -13,10 +12,9 @@ public class UserMenu extends Menu{
 		this.currentUser = currentUser;
 		this.users = users;
 		this.scanner = scanner;
-		//this.menu = menu;
 	}
 
-	public boolean displayUserMenu() {
+	public void displayUserMenu() {
 		AccountMenu accountMenu = new AccountMenu(currentUser, scanner);
 
 		while (currentUser != null) {
@@ -37,7 +35,7 @@ public class UserMenu extends Menu{
 				break;
 			case 3:
 				deleteUser(currentUser);
-				break;
+				return;
 			case 4:
 				currentUser = null;
 				System.out.println("Logged out.");
@@ -46,7 +44,6 @@ public class UserMenu extends Menu{
 				System.out.println("Invalid option. Please try again.");
 			}
 		}
-		return currentUser == null;
 	}
 
 	private void deleteUser(User user) {
@@ -57,7 +54,6 @@ public class UserMenu extends Menu{
 			users.remove(user.getUsername());
 			System.out.println("User successfully deleted. Returning to login screen");
 			currentUser = null;
-			//menu.displayMainMenu();
 		} else {
 			System.out.println("User deletion cancelled.");
 		}
