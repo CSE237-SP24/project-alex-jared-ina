@@ -6,7 +6,7 @@ import bankapp.BankAccount;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class loantest {
+class LoanTest {
 
     private BankAccount account;
 

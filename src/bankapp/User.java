@@ -2,11 +2,14 @@ package bankapp;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class User {
     private String username;
     private String password; 
     private Map<String, BankAccount> accounts; 
+	private Scanner scanner;
+
     
 
     public User(String username, String password) {
@@ -31,13 +34,20 @@ public class User {
         return username;
     }
     
-    public String getPassword() {
+    public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getPassword() {
     	return password;
     }
 
     public Map<String, BankAccount> getAccounts() {
         return accounts;
     }
+	
+
+	
     
 
 	public void transfer(BankAccount from, BankAccount to, double amount) {
@@ -61,6 +71,7 @@ public class User {
 	    }
 	}
 	
+	
 	public void merge(BankAccount from, BankAccount to) {
 		if(from == to) {
 			throw new IllegalArgumentException("Can't merge with the same account");
@@ -73,7 +84,9 @@ public class User {
 	        System.out.println(from.getAccountName() + " has been deleted."); 
 	        accounts.remove(from.getAccountName());
 	    }
+    
 	}
+
 	
 	
 	

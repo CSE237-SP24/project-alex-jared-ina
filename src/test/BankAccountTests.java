@@ -154,15 +154,8 @@ class BankAccountTests {
     void testTransferToSameAccount() {
 
         double initialBalance = mainAccount.getBalance();
-
         assertThrows(IllegalArgumentException.class, () -> user.transfer(mainAccount, mainAccount, 100), "Transferring between the same account should throw an exception");
-
         assertEquals(initialBalance, mainAccount.getBalance(), "Failed transfer");
     }
-    
-
-    
-
-   
     
 }

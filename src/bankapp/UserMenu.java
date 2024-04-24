@@ -50,6 +50,8 @@ public class UserMenu{
 			}
 		}
 	}
+	
+
 
 	private void handleDeleteUser(User user) {
 		System.out.print("Are you sure you want to delete this user? This action cannot be undone! (yes/no): ");
@@ -67,7 +69,6 @@ public class UserMenu{
 		user.getAccounts().clear();
 		users.remove(user.getUsername());
 	}
-	
-	
+
 	
 }

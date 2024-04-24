@@ -8,6 +8,7 @@ public class Menu {
 	private Scanner scanner = new Scanner(System.in);
 	private Map<String, User> users = new HashMap<>();
 	private User currentUser;
+	private int incorrectPassword;
 
 	public void displayMainMenu() {
 		while (true) {
@@ -46,19 +47,26 @@ public class Menu {
 	}
 	
 	private void loginUser() {
-		System.out.println("Username:");
-		String username = scanner.nextLine();
-		System.out.println("Password:");
-		String password = scanner.nextLine();
-
-		User user = users.get(username);
-		if (user != null && user.authenticate(password)) {
-			currentUser = user;
-			System.out.println("Login successful.");
-		} else {
-			System.out.println("Login failed. Please try again.");
-		}
+	    System.out.println("Username:");
+	    String username = scanner.nextLine();
+	    User user = users.get(username);
+	    System.out.println("Password:");
+	    String password = scanner.nextLine();
+	    if (user != null && user.authenticate(password)) {
+	        currentUser = user;
+	        incorrectPassword = 0;  // Reset the counter after successful login
+	        System.out.println("Login successful.");
+	    } else {
+	        incorrectPassword++;
+	        if (incorrectPassword < 3) {
+	            System.out.println("Login failed. Please try again.");
+	        } else {
+	            getValidPasswordInput(user);
+	        }
+	    }
 	}
+	
+
 
 	private void registerUser() {
 		System.out.println("Choose a username:");
@@ -78,7 +86,35 @@ public class Menu {
 		User newUser = new User(username, password);
 		users.put(username, newUser);
 	}
+	
+	private void getValidPasswordInput(User user) {
+	    System.out.println("Too many incorrect attempts, would you like to change your password? Enter Yes or No:");
+	    String confirmation = scanner.nextLine().trim().toLowerCase();
+	    if ("yes".equals(confirmation)) {
+	        handleChangePassword(user);
+	    } else {
+	        incorrectPassword = 0; 
+	        System.out.println("Ok, returning to the main menu.");
+	    }
+	}
 
+	private void handleChangePassword(User user) {
+	    if (!users.containsKey(user.getUsername())) {
+	    	System.out.println("User not found. Please try again or register.");
+	    	loginUser();
+	    }
+	    System.out.println("What would you like your new password to be?");
+	    String newPassword = scanner.nextLine();
+	    if (!newPassword.equals(user.getPassword())) {
+	        user.setPassword(newPassword);
+	        System.out.println("Password changed successfully!");
+	        incorrectPassword = 0; 
+	    } else {
+	        System.out.println("New password cannot be the same 1as the old password. Please try again.");
+	        handleChangePassword(user);
+	    }
+	}
+    
 	public static void main(String[] args) {
 		Menu menu = new Menu();
 		menu.displayMainMenu();
