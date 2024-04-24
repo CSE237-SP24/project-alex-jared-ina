@@ -87,6 +87,13 @@ public class BankAccount {
 		return this.balance;
 	}
 
+	public int getPayments() {
+		return TOTAL_PAYMENTS;
+	}
+	
+	public int getPeriod() {
+		return loanPeriod;
+	}
 	public String getAccountName() {
 		return accountName;
 	}
