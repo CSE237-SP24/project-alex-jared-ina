@@ -45,9 +45,6 @@ public class Menu {
 		}
 	}
 	
-		
-	
-
 	private void loginUser() {
 		System.out.println("Username:");
 		String username = scanner.nextLine();
