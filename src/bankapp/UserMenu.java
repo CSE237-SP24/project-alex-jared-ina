@@ -3,7 +3,7 @@ package bankapp;
 import java.util.Map;
 import java.util.Scanner;
 
-public class UserMenu extends Menu{
+public class UserMenu{
 	private User currentUser;
 	private Map<String, User> users;
 	private Scanner scanner;
@@ -39,7 +39,7 @@ public class UserMenu extends Menu{
 				accountMenu.createNewAccount();
 				break;
 			case 3:
-				deleteUser(currentUser);
+				handleDeleteUser(currentUser);
 				return;
 			case 4:
 				currentUser = null;
@@ -51,16 +51,23 @@ public class UserMenu extends Menu{
 		}
 	}
 
-	private void deleteUser(User user) {
+	private void handleDeleteUser(User user) {
 		System.out.print("Are you sure you want to delete this user? This action cannot be undone! (yes/no): ");
 		String confirmation = scanner.nextLine().trim().toLowerCase();
 		if ("yes".equals(confirmation)) {
-			user.getAccounts().clear();
-			users.remove(user.getUsername());
+			deleteUser(user);
 			System.out.println("User successfully deleted. Returning to login screen");
 			currentUser = null;
 		} else {
 			System.out.println("User deletion cancelled.");
 		}
 	}
+	
+	public void deleteUser(User user) {
+		user.getAccounts().clear();
+		users.remove(user.getUsername());
+	}
+	
+	
+	
 }

@@ -2,9 +2,14 @@ package test;
 
 import bankapp.BankAccount;
 import bankapp.User;
+import bankapp.UserMenu;
 import bankapp.Menu;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,11 +20,16 @@ import bankapp.User;
 class userTests {
 
 	private User user;
+	private UserMenu userMenu;
 	private BankAccount account1;
 	private BankAccount account2;
+	private Menu menu;
+	private Map<String, User> users;
+    private Scanner scanner;
 
 	@BeforeEach
 	void setUp() {
+		menu = new Menu();
 		user = new User("username", "password");
 		account1 = new BankAccount();
 		account1.setAccountName("Checking");
@@ -72,6 +82,27 @@ class userTests {
 		assertEquals(300, account1.getBalance(), .01, "Balance should be $300 after merge");
 	
 
+	}
+	@Test
+	void deleteUser() {
+		users = new HashMap<>();
+	    scanner = new Scanner(System.in);
+		menu.addUser(user.getUsername(),user.getPassword());
+		User user = new User("testUser", "password");
+		users.put(user.getUsername(), user);
+		
+		UserMenu userMenu = new UserMenu(user, users, scanner);
+		userMenu.deleteUser(user);
+		
+		assertFalse(users.containsKey(user.getUsername()));
+		
+		assertEquals(users.size(),0);
+		
+        // Check if the user's accounts have been cleared
+        assertTrue(user.getAccounts().isEmpty());
+		
+		
+		
 	}
 
 }

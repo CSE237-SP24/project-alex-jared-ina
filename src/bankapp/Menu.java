@@ -70,12 +70,16 @@ public class Menu {
 		String password = scanner.nextLine();
 
 		if (!users.containsKey(username)) {
-			User newUser = new User(username, password);
-			users.put(username, newUser);
+			addUser(username,password);
 			System.out.println("User registered successfully. Please login.");
 		} else {
 			System.out.println("Username already taken. Please try again.");
 		}
+	}
+	
+	public void addUser(String username, String password) {
+		User newUser = new User(username, password);
+		users.put(username, newUser);
 	}
 
 	public static void main(String[] args) {
