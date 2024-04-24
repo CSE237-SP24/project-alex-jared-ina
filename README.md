@@ -94,3 +94,30 @@ We currently have all of our user stories completed and will work to brainstorm 
 
 ## Is there anything that you implemented but doesn't currently work?
 Everything implemented currently is functional however we need to finish polishing up the tests.
+
+# Iteration 3 - Final Iteration
+## What user stories were completed this iteration?
+### This iteration we completed the following user stories:
+- #### iteration 1 feedback - more in depth tests / Polish tests
+Self explanatory, tests were lacking in previous iterations and we created more in-depth and organized test cases for our existing and new features
+- #### Users can merge two accounts adding balances and deleting the other
+Self Explanatory
+- #### Delete a user which deletes all their accounts
+Self explanatory
+- #### Users can take out a loan (assumed 5% APR)
+Users can take out a loan of the amount of their choosing for 12, 36, or 60 months. Flat 5% APY.
+This amount is added to both their cash balance and newly added instance variable, loan balance.
+Users can make payments on their loan which are calculated off of the rate and the amount they borrowed. 
+- #### Break up Menu class
+Find a way to divide our previously large menu class.
+We divided the menu into the three screens that represent the three submenus we had:
+- Menu class handles initial login
+- UserMenu which handles the account selection/creation menu
+- AccountMenu which handles the individual interactions that can occur within an account 
+\
+Overall this greatly improved not just the readability but the overall quality of our code but took work to divide.
+- #### Users can change password
+Self explanatory
+
+## Is there anything that you implemented but doesn't currently work?
+No, as this is our last iteration all tests pass and to our knowledge all edge cases in user interaction have been tested. 
